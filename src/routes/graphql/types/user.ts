@@ -5,7 +5,7 @@ import { FastifyInstance } from 'fastify';
 import { User } from '@prisma/client';
 import { PostType } from './post.js';
 
-interface IUser {
+export interface IUser {
     id: string,
     name: string,
     balance: number,

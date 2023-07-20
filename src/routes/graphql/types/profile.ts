@@ -7,7 +7,7 @@ import { UserType } from "./user.js";
 export interface Profile{
     id: string,
     isMale: boolean,
-    yearOfBirth: string,
+    yearOfBirth: number,
     userId: string,
     memberTypeId: string,    
 }

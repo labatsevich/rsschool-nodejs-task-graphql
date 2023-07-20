@@ -7,6 +7,7 @@ import { MemberTypeIdEnum, MemberType } from './types/member.js';
 import { UUID } from 'crypto';
 import { ProfileType } from './types/profile.js';
 import { PostType } from './types/post.js';
+import { Mutation } from './mutation.js';
 
 export const gqlResponseSchema = Type.Partial(
   Type.Object({
@@ -111,6 +112,7 @@ export const MyQLSchema = new GraphQLSchema({
       },
     },
   },
-  )
+  ),
+  mutation: Mutation
 
 })
