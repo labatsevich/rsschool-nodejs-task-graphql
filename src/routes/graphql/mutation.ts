@@ -27,8 +27,13 @@ interface ProfileInput {
 }
 
 interface ChangeProfileInput extends ParamID {
-  dto: Pick<Profile, 'isMale' |  'yearOfBirth' | 'memberTypeId'>
+  dto: Pick<Profile, 'isMale' | 'yearOfBirth' | 'memberTypeId'>
 };
+
+interface subscribeToInput {
+  userId: string,
+  authorId: string,
+}
 
 const CreatePostInputType = new GraphQLInputObjectType({
   name: "CreatePostInput",
@@ -93,11 +98,17 @@ export const Mutation = new GraphQLObjectType({
         }
       },
       resolve: async (_: unknown, args: PostInput, { prisma }: FastifyInstance) => {
+      
+        try{
         const post = await prisma.post.create({
           data: args.dto
         })
-        if (post) { return post; }
+
+        return post;
+      }catch{
         return null
+      }
+
       }
     },
     changePost: {
@@ -226,7 +237,32 @@ export const Mutation = new GraphQLObjectType({
         }
       }
     },
+    subscribeTo: {
+      type: UserType,
+      args: {
+        userId: { type: new GraphQLNonNull(UUIDType) },
+        authorId: { type: new GraphQLNonNull(UUIDType) }
+      },
+      resolve: async (_: unknown, { userId, authorId }: subscribeToInput, { prisma }: FastifyInstance) => {
 
-
+         return  await prisma.user.update({
+            where: { id: userId },
+            data: { userSubscribedTo: { create: { authorId } } },
+          })
+        
+        }
+    },
+    unsubscribeFrom: {
+      type: GraphQLBoolean,
+      args: {
+        userId: { type: new GraphQLNonNull(UUIDType) },
+        authorId: { type: new GraphQLNonNull(UUIDType) }
+      },
+      resolve: async (_: unknown, { userId: subscriberId , authorId }: subscribeToInput, { prisma }: FastifyInstance) => {
+          await prisma.subscribersOnAuthors.delete({
+            where: { subscriberId_authorId: { subscriberId, authorId } },
+          });
+      }
+    }
   }
 });

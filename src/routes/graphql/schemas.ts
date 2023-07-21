@@ -4,7 +4,6 @@ import { UserType } from './types/user.js';
 import { FastifyInstance } from "fastify";
 import { UUIDType } from './types/uuid.js';
 import { MemberTypeIdEnum, MemberType } from './types/member.js';
-import { UUID } from 'crypto';
 import { ProfileType } from './types/profile.js';
 import { PostType } from './types/post.js';
 import { Mutation } from './mutation.js';
@@ -17,7 +16,7 @@ export const gqlResponseSchema = Type.Partial(
 );
 
 export interface ParamID {
-  id: UUID;
+  id: string;
 }
 
 
