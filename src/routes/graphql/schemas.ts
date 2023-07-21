@@ -16,7 +16,7 @@ export const gqlResponseSchema = Type.Partial(
   }),
 );
 
-interface ParamID {
+export interface ParamID {
   id: UUID;
 }
 
