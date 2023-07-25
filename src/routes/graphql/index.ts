@@ -17,7 +17,7 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
 
       const errors = validate(MyQLSchema, parse(req.body.query) , [depthLimit(5)]);
 
-      if(errors){
+      if(errors.length > 0){
         await reply.send({data: null, errors});
         return;
       }
